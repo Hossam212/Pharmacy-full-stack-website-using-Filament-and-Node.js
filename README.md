@@ -1,9 +1,3 @@
-   'mongodb' => [
-           'driver' => 'mongodb',
-          'dsn' => env('DB_URI', 'mongodb+srv://shark010212:G2hnpkrvVqrBp20Z@cluster0.ajoyfuk.mongodb.net/Pharmacy?retryWrites=true&w=majority'),
-           'database' => 'Pharmacy',
-        ],
-
 
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
