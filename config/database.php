@@ -16,7 +16,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'mongodb'),
+    'default' => env('DB_CONNECTION', 'mysql'),
 
     /*
     |--------------------------------------------------------------------------
@@ -38,11 +38,20 @@ return [
             'prefix' => '',
             'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
         ],
-          'mongodb' => [
-           'driver' => 'mongodb',
-          'dsn' => env('DB_URI', 'mongodb+srv://shark010212:G2hnpkrvVqrBp20Z@cluster0.ajoyfuk.mongodb.net/Pharmacy?retryWrites=true&w=majority'),
-           'database' => 'Pharmacy',
-        ],
+             'mongodb' => [
+             'driver' => 'mongodb',
+             'dsn' => 'mongodb+srv://shark010212:G2hnpkrvVqrBp20Z@cluster0.ajoyfuk.mongodb.net/',
+             'database' => 'Pharmacy',
+             'options' => [
+                 'maxPoolSize' => 20,
+                 'w' => 'majority',
+             ],
+             'driverOptions' => [
+                 'serverApi' => 1,
+             ],
+         ],
+
+
 
         'mysql' => [
             'driver' => 'mysql',
