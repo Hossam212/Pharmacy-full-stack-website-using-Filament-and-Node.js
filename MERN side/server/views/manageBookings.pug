@@ -1,0 +1,66 @@
+extends base
+
+block content
+  h1 Manage Bookings
+    link(
+      rel='stylesheet',
+      href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css',
+      integrity='sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=',
+      crossorigin='anonymous'
+    )
+    .container.mt-3.mb-4
+    .col-lg-9.mt-4.mt-lg-0
+      .row
+        .col-md-12
+          .user-dashboard-info-box.table-responsive.mb-0.bg-white.p-4.shadow-sm
+            table.table.manage-candidates-top.mb-0
+              thead
+                tr
+                  each booking in bookings
+                    tbody
+                      tr.candidates-list
+                        td.title
+                          .candidate-list-details
+                            .candidate-list-info
+                              .candidate-list-title
+                                h5.mb-0
+                                  span= booking.user.name
+                              .candidate-list-option
+                                ul.list-unstyled
+                                  li
+                                    | Property booked: #{ booking.tour.name }
+                                  li
+                                    | Price: &#128178;#{ booking.price }
+                                  li
+                                    | Booked at: &#x23F0; #{ booking.createdAt.toLocaleString('en-us', { month: 'long', year: 'numeric' }) }
+                                  li
+                                    | Paid: #{ booking.paid ? 'Yes' : 'No' }
+                        td
+                          ul.list-unstyled.mb-0.d-flex.justify-content-end
+                            li
+                              form(
+                                action=`/manage-bookings/${booking._id}`,
+                                method='POST'
+                              )
+                                button.btn.btn--green.btn--small.text-danger(
+                                  type='submit',
+                                  style='font-size: 20px'
+                                ) Cancel Booking
+    - const currentPage = parseInt(req.query.page, 10) || 1;
+    - const bookingperpage = 7;
+    - const totalBookings = allbookings.length;
+    - const totalPages = Math.ceil(totalBookings / bookingperpage);
+
+    .text-center.mt-3.mt-sm-3
+      ul.pagination.justify-content-center.mb-0
+        li.page-item
+          a.page-link(
+            href='?page=' + (currentPage - 1 > 0 ? currentPage - 1 : 1)
+          ) Previous
+        - for (let page = 1; page <= totalPages; page++)
+          li.page-item(class=page === currentPage ? 'active' : '')
+            a.page-link(href=`?page=${page}`) #{ page }
+        li.page-item
+          a.page-link(
+            href='?page=' + (currentPage + 1 <= totalPages ? currentPage + 1 : totalPages)
+          ) Next

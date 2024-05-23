@@ -1,0 +1,44 @@
+extends base
+
+block content
+  main.main
+    .user-view
+      .user-view__content
+        .user-view__form-container
+          h2.heading-secondary.ma-bt-md Edit User
+
+          form.form.form-user-data(
+            action=`/manage-users/${user._id}/update`,
+            method='POST',
+            enctype='multipart/form-data'
+          )
+            .form__group
+              label.form__label(for='name') Name
+              input#name.form__input(type='text', name='name', value=user.name)
+
+            .form__group.ma-bt-md
+              label.form__label(for='email') Email address
+              input#email.form__input(
+                type='email',
+                name='email',
+                value=user.email
+              )
+
+            .form__group.form__select
+              label.form__label(for='role') Role
+              select#role.form__input(name='role')
+                option(value='user', selected=user.role === 'user') User
+                option(value='admin', selected=user.role === 'admin') Admin
+            .form__group.form__photo-upload
+              img.form__user-photo(
+                src=`/img/users/${user.photo}`,
+                alt='User photo'
+              )
+              input#photo.photo.photo.form__upload(
+                type='file',
+                accept='image/*',
+                name='photo'
+              )
+              label(for='photo') Choose new photo
+            .form__group.right
+              button.btn.btn--small.btn--green(type='submit') Update User

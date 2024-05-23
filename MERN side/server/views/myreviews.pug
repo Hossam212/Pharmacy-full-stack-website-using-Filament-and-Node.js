@@ -1,0 +1,21 @@
+extends base
+include _reviewCard
+
+block content
+  h1 My Reviews
+  table
+    thead
+      tr
+        th Property Name
+        th Review Rating
+        th Review Text
+        th Actions
+
+    tbody
+      each review in reviews
+        tr
+          td= review.property.name
+          td= review.rating
+          td= review.review
+          td
+            a(href=`/my-reviews/${review._id}`) Update or Delete Review

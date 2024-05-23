@@ -1,0 +1,67 @@
+extends base
+
+block content
+  h1 Create Tour
+
+  form(action='/manage-tours', method='POST', enctype='multipart/form-data')
+    label(for='name') Tour Name:
+    input#name(type='text', name='name')
+
+    label(for='duration') Duration (in days):
+    input#duration(type='number', name='duration')
+
+    label(for='maxGroupSize') Max Group Size:
+    input#maxGroupSize(type='number', name='maxGroupSize')
+
+    label(for='price') Number of Bedrooms:
+    input#bedrooms(type='number', name='bedrooms')
+
+    label(for='price') Number of Bathrooms:
+    input#bathrooms(type='number', name='bathrooms')
+
+    label(for='price') Size:
+    input#size(type='number', name='size')
+
+    label(for='price') Price:
+    input#price(type='number', name='price')
+
+    label(for='summary') Summary:
+    textarea#summary(name='summary', rows='5')
+
+    label(for='description') Description:
+    textarea#description(name='description', rows='8')
+
+    label(for='imageCover') Image Cover:
+    input#imageCover(type='file', name='imageCover', accept='image/*')
+
+    label(for='images') Images:
+    input#images(type='file', name='images', accept='image/*', multiple='')
+    label(for='locations') Tour Locations:
+    #locations-container
+      .location-details
+        label(for='locationDescription') Description:
+        input(
+          type='text',
+          name='location[description]',
+          placeholder='Description'
+        )
+
+        label(for='locationCoordinates') Coordinates (latitude, longitude):
+        input(
+          type='number',
+          name='location[coordinates][]',
+          step='any',
+          placeholder='Longitude'
+        )
+        input(
+          type='number',
+          name='location[coordinates][]',
+          step='any',
+          placeholder='Latitude'
+        )
+
+        label(for='locationDay') Day:
+        input(type='number', name='location[day]', placeholder='Day')
+
+    input(type='submit', value='Create Tour')
+  h2 If you want to upload the tour's video, please use the "Update Tour" page.

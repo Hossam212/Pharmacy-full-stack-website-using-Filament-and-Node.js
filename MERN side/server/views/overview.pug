@@ -1,0 +1,132 @@
+extends base
+
+block append head
+  script(src='https://cdn.jsdelivr.net/npm/chart.js')
+
+block content
+  style.
+    #filterToggle.arrow-down::after {
+      content: '\25BC';
+      margin-left: 5px;
+    }
+    #filterToggle.arrow-up::after {
+      content: '\25B2'; /* Unicode for up arrow */
+      margin-left: 5px; /* Adjust spacing */
+    }
+  style.
+    #priceChart {
+      max-width: 550px; /* Adjust the maximum width as needed */
+      margin: 0 auto; /* Center the chart horizontally */
+    }
+  main.main
+    button#filterToggle.btn.btn--green.btn--small.arrow-down(
+      type='button',
+      style='margin-bottom: 10px'
+    ) Filter
+    form#filterForm(
+      action='/filter',
+      method='POST',
+      style='display: none; flex-wrap: wrap'
+    )
+      .form__group(style='display: flex; flex-wrap: wrap')
+        label.form__label(for='bedrooms', style='margin-right: 10px') Number of Bedrooms:
+        select#bedrooms(name='bedrooms', style='margin-right: 10px')
+          option(value='1') 1
+          option(value='2') 2
+          option(value='3') 3
+          // Add more options as needed
+
+        label.form__label(for='bathrooms', style='margin-right: 10px') Number of Bathrooms:
+        select#bathrooms(name='bathrooms', style='margin-right: 10px')
+          option(value='1') 1
+          option(value='2') 2
+          option(value='3') 3
+          // Add more options as needed
+      .form__group
+        label.form__label(for='latitude', style='display: none') Latitude:
+        input#latitude.form__input(type='hidden', name='latitude')
+      .form__group
+        label.form__label(for='longitude', style='display: none') Longitude:
+        input#longitude.form__input(type='hidden', name='longitude') 
+      .form__group(style='display: flex; flex-wrap: wrap')
+        label.form__label(for='propertySize', style='margin-right: 10px') Property Size (m&sup2;):
+        input#propertySize.form__input(
+          type='text',
+          name='propertySize',
+          style='margin-right: 10px'
+        )
+
+        label.form__label(for='priceRangeMin', style='margin-right: 10px') Price Range (Min):
+        input#priceRangeMin.form__input(
+          type='text',
+          name='priceRangeMin',
+          style='margin-right: 10px'
+        )
+
+        label.form__label(for='priceRangeMax', style='margin-right: 10px') Price Range (Max):
+        input#priceRangeMax.form__input(
+          type='text',
+          name='priceRangeMax',
+          style='margin-right: 10px'
+        )
+
+        label.form__label(for='radius', style='margin-right: 10px') Property within radius (in km):
+        input#radius.form__input(
+          type='text',
+          name='radius',
+          style='margin-right: 10px'
+        )
+      .form__group
+        button.btn.btn--green.btn--small(
+          type='submit',
+          style='margin-bottom: 10px'
+        ) Apply Filter
+
+    .card-container
+      each property in properties
+        .card
+          .card__header
+            .card__picture
+              .card__picture-overlay &nbsp;
+              img.card__picture-img(
+                src=`img/tours/${property.imageCover}`,
+                alt=`${property.name}`
+              )
+            h3.heading-tertirary
+              span= property.name
+
+          .card__details
+            h4.card__sub-heading= `${property.duration}-day property`
+            p.card__text= property.summary
+            .card__data
+              svg.card__icon
+                use(xlink:href='img/icons.svg#icon-map-pin')
+              span= property.size
+            .card__data
+              svg.card__icon
+                use(xlink:href='img/icons.svg#icon-calendar')
+              span= property.createdAt.toLocaleString('en-us', { month: 'long', year: 'numeric' })
+            .card__data
+              svg.card__icon
+                use(xlink:href='img/icons.svg#icon-flag')
+              span= `1 stop`
+            .card__data
+              svg.card__icon
+                use(xlink:href='img/icons.svg#icon-user')
+              span= `${property.maxGroupSize} people`
+
+          .card__footer
+            p
+              span.card__footer-value= `$${property.price}`
+              |
+              span.card__footer-text per person
+            p.card__ratings
+              span.card__footer-value= property.ratingsAverage
+              |
+              span.card__footer-text= `rating (${property.ratingsQuantity})`
+            a.btn.btn--green.btn--small(href=`/tours/${property.slug}`) Details
+    h1.form__label Price Distribution Chart
+    canvas#priceChart(width='400', height='400')
+    p#lessThan100kPercentage(style='display: none') #{ lessThan100kPercentage }
+    p#between100kAnd500kPercentage(style='display: none') #{ between100kAnd500kPercentage }
+    p#moreThan500kPercentage(style='display: none') #{ moreThan500kPercentage }

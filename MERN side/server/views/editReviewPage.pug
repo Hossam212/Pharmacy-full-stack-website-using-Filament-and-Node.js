@@ -1,0 +1,20 @@
+extends base
+
+block content
+  h1 Update or Delete Review
+
+  form(action=`/my-reviews/update-review/${review._id}`, method='POST')
+    label(for='reviewText') Review Text:
+    input#reviewText(type='text', name='review', value=review.review)
+    label(for='rating') Rating:
+    input#rating(
+      type='number',
+      name='rating',
+      min='1',
+      max='5',
+      value=review.rating
+    )
+    button(type='submit') Update Review
+
+  form(action=`/my-reviews/delete-review/${review._id}`, method='POST')
+    button(type='submit') Delete Review

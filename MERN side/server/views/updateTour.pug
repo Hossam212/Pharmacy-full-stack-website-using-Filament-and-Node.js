@@ -1,0 +1,108 @@
+extends base
+
+block content
+  h1 Update property
+  main.main
+    .user-view
+      .user-view__content
+        .user-view__form-container
+          h2.heading-secondary.ma-bt-md Edit Property: #{ property.name }
+
+          form.form.form-user-data(
+            action=`/manage-tours/${property._id}`,
+            method='POST',
+            enctype='multipart/form-data'
+          )
+            .form__group
+              label.form__label(for='name') property Name:
+              input#name.form__input(
+                type='text',
+                name='name',
+                value=property.name
+              )
+
+            .form__group
+              label.form__label(for='duration') Duration (in days):
+              input#duration.form__input(
+                type='number',
+                name='duration',
+                value=property.duration
+              )
+
+            .form__group
+              label.form__label(for='maxGroupSize') Max Group Size:
+              input#maxGroupSize.form__input(
+                type='number',
+                name='maxGroupSize',
+                value=property.maxGroupSize
+              )
+
+            .form__group.form__select
+              label.form__label(for='difficulty') Difficulty:
+              select#difficulty.form__input(name='difficulty')
+                option(value='easy', selected=property.difficulty === 'easy') Easy
+                option(
+                  value='medium',
+                  selected=property.difficulty === 'medium'
+                ) Medium
+                option(
+                  value='difficult',
+                  selected=property.difficulty === 'difficult'
+                ) Difficult
+
+            .form__group
+              label.form__label(for='price') Price:
+              input#price.form__input(
+                type='number',
+                name='price',
+                value=property.price
+              )
+
+            .form__group
+              label.form__label(for='summary') Summary:
+              textarea#summary.form__input(name='summary', rows='5')= property.summary
+
+            .form__group
+              label.form__label(for='description') Description:
+              textarea#description.form__input(name='description', rows='8')= property.description
+
+            .form__group
+              label.form__label(for='imageCover') Image Cover:
+              input#imageCover.form__input(
+                type='file',
+                name='imageCover',
+                accept='image/*',
+                multiple=''
+              )
+
+            .form__group
+              label.form__label(for='images') Images:
+              input#images.form__input(
+                type='file',
+                name='images',
+                accept='image/*',
+                multiple=''
+              )
+
+            .form__group.right
+              input.button.btn.btn--small.btn--green(
+                type='submit',
+                value='Update property'
+              )
+
+          form.form.form-user-data(
+            action=`/manage-tours/${property._id}/update-video`,
+            method='POST',
+            enctype='multipart/form-data'
+          )
+            .form__group
+              label.form__label(for='video') Update Video:
+              input#video.form__input(
+                type='file',
+                name='video',
+                accept='video/*'
+              )
+              input.button.btn.btn--small.btn--green(
+                type='submit',
+                value='Update property Video'
+              )
