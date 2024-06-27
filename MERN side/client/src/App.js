@@ -11,7 +11,6 @@ import Skin from "./pages/Skincare.jsx";
 import DiabetesAI from "./pages/DiabetesAI.jsx";
 import Footer from "./components/Footer";
 import ScrollToTop from "react-scroll-to-top";
-import Header from "./components/Header";
 import CheckoutForm from "./pages/CheckoutForm.jsx";
 
 function App() {

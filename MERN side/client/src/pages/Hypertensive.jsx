@@ -1,7 +1,35 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import Header from "../components/Header.jsx";
-import { Link } from "react-router-dom";
+import { UserContext } from "../components/UserContext.jsx";
+
 const Products = () => {
+    const { userId } = useContext(UserContext);
+    const addToCart = async (productId) => {
+        const fetchAddToCart = async () => {
+            const response = await fetch("/api/v1/users/addtocart", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ userId, productId }),
+            });
+
+            if (!response.ok) {
+                throw new Error("Failed to add product to cart");
+            }
+            return response.json();
+        };
+
+        toast.promise(fetchAddToCart(), {
+            pending: "Adding to cart...",
+            success: "Product added to cart!",
+            error: "Failed to add product to cart",
+        });
+    };
     const [products, setProducts] = useState([]);
 
     useEffect(() => {
@@ -77,12 +105,17 @@ const Products = () => {
                                                 </a>
                                             </li>
                                         </ul>
-                                        <Link
-                                            to="/checkout"
+                                        <button
                                             className="add-to-cart"
+                                            onClick={() =>
+                                                addToCart(product.id)
+                                            }
                                         >
-                                            Purchase
-                                        </Link>
+                                            <FontAwesomeIcon
+                                                icon={faCartShopping}
+                                            />
+                                            &nbsp; Add to Cart
+                                        </button>
                                     </div>
                                     <div className="product-content">
                                         <h3 className="title">

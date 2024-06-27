@@ -42,6 +42,7 @@ router.get('/me', userauth.protect, viewsController.getMe);
 router.get('/my-tours', userauth.protect, viewsController.getMyTours);
 router.get('/signup', viewsController.getSignUp);
 router.post('/signup', userauth.signup);
+router.post('/login', userauth.login);
 router.get('/my-reviews', userauth.protect, viewsController.getUserReviews);
 router.get('/my-reviews/:id', userauth.protect, viewsController.getEditReview);
 router.post('/filter', userauth.protect, viewsController.getFilteredProperties);

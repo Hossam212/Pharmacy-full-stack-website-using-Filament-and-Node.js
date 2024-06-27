@@ -47,17 +47,17 @@ exports.login = catchAsync(async (req, res, next) => {
     const { email, password } = req.body;
     const user = await User.findOne({ email }).select('+password');
     if (!user || !(await user.correctPassword(password, user.password))) {
-        return next('Email or password is incorrect', 401);
+        res.status(401).json({
+            status: 'fail',
+            message: 'Incorrect email or password!',
+        });
     }
     createSendToken(user, 200, req, res);
 });
 
 exports.logout = catchAsync(async (req, res, next) => {
-    res.cookie('jwt', 'loggedout', {
-        expires: new Date(Date.now() + 10 * 1000),
-        httpOnly: true,
-    });
-    res.status(200).json({ status: 'success' });
+    res.clearCookie('jwt');
+    res.status(200).send({ status: 'Logged out successfully' });
 });
 exports.protect = catchAsync(async (req, res, next) => {
     if (req.cookies.jwt) {
@@ -109,7 +109,10 @@ exports.isLoggedIn = async (req, res, next) => {
                     message: 'Password recently changed',
                 });
             }
-            res.status(200).json({ status: 'success', data: { user } });
+            res.status(200).json({
+                status: 'success',
+                data: { userId: decoded.id },
+            });
         } catch (err) {
             return res
                 .status(401)

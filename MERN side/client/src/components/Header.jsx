@@ -1,29 +1,34 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect, useContext } from "react";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { Link, useNavigate } from "react-router-dom";
+import { UserContext } from "./UserContext";
+const logout = async () => {
+    try {
+        const response = await fetch("/api/v1/users/logout", {
+            method: "GET",
+            credentials: "include", // Ensure cookies are sent with the request
+        });
+
+        if (response.ok) {
+            toast.success("Logged out successfully");
+            // Redirect or update state to reflect the user is logged out
+        } else {
+            toast.error("Failed to log out");
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        toast.error("Error logging out");
+    }
+};
 function Header() {
-    const [user, setUser] = useState(null);
+    const navigate = useNavigate();
 
-    useEffect(() => {
-        const fetchUser = async () => {
-            try {
-                const response = await fetch("/checkAuth", {
-                    method: "GET",
-                    credentials: "include", // This ensures cookies are included in the request
-                });
-                const data = await response.json();
-                if (data.status === "success") {
-                    setUser(data.data.user);
-                } else {
-                    setUser(null);
-                }
-            } catch (error) {
-                console.error(error);
-                setUser(null);
-            }
-        };
-
-        fetchUser();
-    }, []);
+    const handleLogout = async () => {
+        await logout();
+        navigate("/");
+    };
+    const { userId } = useContext(UserContext);
     return (
         <>
             {/* ======= Header ======= */}
@@ -114,11 +119,12 @@ function Header() {
                         <span className="d-none d-md-inline">Diabetes AI</span>
                     </Link>
                     <div className="user-details">
-                        {user ? (
+                        {userId ? (
                             <>
                                 <a
                                     href="/"
                                     className="appointment-btn  nav__el--logout"
+                                    onClick={handleLogout}
                                 >
                                     <span className="nav__el--logout">
                                         Log out

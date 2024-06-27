@@ -10,7 +10,6 @@ const UserSchema = mongoose.Schema({
     },
     role: {
         type: String,
-        required: [true, 'A user must have a role'],
         enum: {
             values: ['user', 'admin'],
             message: 'User role is either: user, admin',
@@ -23,6 +22,12 @@ const UserSchema = mongoose.Schema({
         unique: [true, 'Email already used.'],
         validate: [validator.isEmail, 'Please enter a valid email address.'],
     },
+    products: [
+        {
+            productId: mongoose.Schema.Types.ObjectId,
+            quantity: Number,
+        },
+    ],
     photo: String,
     password: {
         type: String,
@@ -32,7 +37,7 @@ const UserSchema = mongoose.Schema({
     },
     confirmPassword: {
         type: String,
-        required: [true, 'Please confirm your password!'],
+
         validate: {
             validator: function () {
                 return this.confirmPassword == this.password;
@@ -64,6 +69,7 @@ UserSchema.pre('save', function (next) {
 
 UserSchema.pre(/^find/, function (next) {
     this.find({ active: { $ne: false } });
+    //this.populate('cart');
     next();
 });
 UserSchema.methods.correctPassword = async function (

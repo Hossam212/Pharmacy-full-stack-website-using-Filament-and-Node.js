@@ -1,7 +1,6 @@
 /*
 import $ from "https://code.jquery.com/jquery-3.7.1.min.js";
 */
-import { login, logout } from "./login.js";
 //import { showAlert } from "./alert.js";
 /*
 import { changeSettings } from "./updateSettings.js";
@@ -9,14 +8,11 @@ import { changeSettings } from "./updateSettings.js";
 */
 //import { bookTour } from "./stripe.js";
 
-console.log("index ran");
 //DOM ELEMENTS
 /*
 const filterForm = document.querySelector("#filterForm");
 */
-const loginForm = document.querySelector(".form--login");
 
-const logOutBtn = document.querySelector(".user-details");
 /*
 const userDataForm = document.querySelector(".form-user-data");
 const userPasswordForm = document.querySelector(".form-user-password");
@@ -57,21 +53,6 @@ if (bookBtn) {
 
 // index.js
 */
-if (loginForm) {
-    document.querySelector(".form").addEventListener("submit", (e) => {
-        e.preventDefault();
-        const email = document.getElementById("email").value;
-        const password = document.getElementById("password").value;
-        login(email, password);
-    });
-}
-if (logOutBtn) {
-    logOutBtn.addEventListener("click", function (event) {
-        if (event.target.matches(".nav__el--logout")) {
-            logout();
-        }
-    });
-}
 
 /*
 if (userDataForm) {
